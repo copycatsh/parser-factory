@@ -1,46 +1,35 @@
 <?php
 
-ini_set('display_errors', E_ALL);
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../src/config/Database.php';
-require_once __DIR__ . '/../src/Controllers/HomeController.php';
-require_once __DIR__ . '/../src/Repositories/ProjectsRepository.php';
 
-    if(file_exists(__DIR__ . '/../env.php')) {
-        require_once __DIR__ . '/../env.php';
-    }
+use App\Controller\ApiController;
+use App\Database\Connection;
+use App\Http\Request;
+use App\Http\Response;
+use App\Repository\JobRepository;
 
-use App\Controllers\HomeController;
-use Klein\Klein;
-use App\Repositories\ProjectsRepository;
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
-$klein = new Klein();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 
-$projectRepository = new ProjectsRepository();
+$request = new Request();
+$uri = strtok($request->getUri(), '?');
+$method = $request->getMethod();
 
-$klein->respond('GET', '/?', function($request, $response)  use (&$projectRepository) {
-    $controller = new HomeController($projectRepository);
-    $response = $controller->index();
-    return $response;
-});
+$pdo = Connection::get();
+$jobRepository = new JobRepository($pdo);
+$controller = new ApiController($jobRepository);
 
-$klein->respond('GET', '/test', function ($request, $response) use (&$projectRepository){
-    $controller = new HomeController($projectRepository);
-    $response = $controller->test();
-    return $response;
-});
-
-$klein->respond('GET', '/insert', function ($request, $response) use (&$projectRepository){
-    $controller = new HomeController($projectRepository);
-    $response = $controller->insert();
-    return $response;
-});
-
-
-$klein->respond('GET', '/projects', function ($request, $response) use (&$projectRepository) {
-    $controller = new HomeController($projectRepository);
-    $response = $controller->getList();
-    return $response;
-});
-
-$klein->dispatch();
+match (true) {
+    $method === 'GET' && $uri === '/api/health' => Response::json(['status' => 'ok']),
+    $method === 'GET' && $uri === '/api/jobs' => $controller->getJobs($request),
+    $method === 'POST' && $uri === '/api/parse' => $controller->parse($request),
+    default => Response::json(['error' => 'Not Found'], 404),
+};
