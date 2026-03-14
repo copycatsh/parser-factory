@@ -1,4 +1,3 @@
-Rewrite README.md:
 
 # parser-factory
 
