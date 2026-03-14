@@ -38,10 +38,14 @@ final class HackerNewsParser implements ParserInterface
                 continue;
             }
 
+            $text = strip_tags(html_entity_decode($comment['text'] ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            $title = mb_strimwidth(strtok($text, "\n|"), 0, 80, '');
+
             $jobs[] = [
                 'hn_id' => (string) $comment['id'],
                 'author' => $comment['by'] ?? '',
-                'text' => $comment['text'] ?? '',
+                'title' => $title,
+                'text' => mb_strimwidth($text, 0, 500, '…'),
                 'time' => $comment['time'] ?? 0,
                 'url' => "https://news.ycombinator.com/item?id={$comment['id']}",
             ];
@@ -56,7 +60,8 @@ final class HackerNewsParser implements ParserInterface
             'query' => [
                 'query' => 'Ask HN Who is hiring',
                 'tags' => 'ask_hn',
-                'hitsPerPage' => 1,
+                'hitsPerPage' => 5,
+                'numericFilters' => 'created_at_i>1700000000',
             ],
         ]);
 
@@ -66,6 +71,8 @@ final class HackerNewsParser implements ParserInterface
         if (empty($hits)) {
             return null;
         }
+
+        usort($hits, fn($a, $b) => ($b['created_at_i'] ?? 0) <=> ($a['created_at_i'] ?? 0));
 
         return (int) $hits[0]['objectID'];
     }

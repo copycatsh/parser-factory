@@ -8,9 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     unzip \
     libicu-dev \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
+    libonig-dev \
     libzip-dev \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -19,11 +17,7 @@ RUN docker-php-ext-install \
     pdo_pgsql \
     intl \
     mbstring \
-    gettext \
     zip
-
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

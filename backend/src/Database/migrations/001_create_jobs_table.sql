@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS jobs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_jobs_source ON jobs(source);
-CREATE INDEX idx_jobs_posted_at ON jobs(posted_at);
+CREATE INDEX IF NOT EXISTS idx_jobs_source ON jobs(source);
+CREATE INDEX IF NOT EXISTS idx_jobs_posted_at ON jobs(posted_at);

@@ -11,3 +11,5 @@
 *.local.php
 .php-cs-fixer.cache
 .phpstan/
+frontend/node_modules/
+backend/src/vendor/
