@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  ::selection {
+    background-color: #B8860B;
+    color: #F5F0E8;
+  }
+}
+
+@layer components {
+  .rule-thin {
+    @apply border-t border-rule;
+  }
+
+  .rule-thick {
+    @apply border-t-2 border-ink;
+  }
+
+  .rule-double {
+    border-top: 3px double #1A1A1A;
+  }
+
+  .ornament::before {
+    content: '§';
+    @apply text-gold text-lg mx-2;
+  }
+
+  .drop-cap::first-letter {
+    @apply float-left font-playfair text-6xl font-bold leading-none mr-2 mt-1;
+    color: #B8860B;
+  }
+
+  .column-rule {
+    @apply border-r border-rule;
+  }
+}

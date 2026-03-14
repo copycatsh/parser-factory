@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - Parser/
+        - Repository/
+        - Database/
+        - Http/
+        - Controller/
+    phpVersion: 80300
