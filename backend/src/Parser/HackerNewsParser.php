@@ -8,14 +8,17 @@ use GuzzleHttp\Client;
 
 final class HackerNewsParser implements ParserInterface
 {
-    private const string BASE_URL = 'https://hacker-news.firebaseio.com/v0';
     private const int MAX_COMMENTS = 100;
 
     private readonly Client $client;
+    private readonly string $baseUrl;
+    private readonly string $searchUrl;
 
     public function __construct()
     {
         $this->client = new Client(['timeout' => 10]);
+        $this->baseUrl = getenv('HN_API_BASE_URL') ?: 'https://hacker-news.firebaseio.com/v0';
+        $this->searchUrl = getenv('HN_SEARCH_URL') ?: 'https://hn.algolia.com/api/v1';
     }
 
     public function parse(): array
@@ -56,7 +59,7 @@ final class HackerNewsParser implements ParserInterface
 
     private function findHiringThread(): ?int
     {
-        $response = $this->client->get('https://hn.algolia.com/api/v1/search', [
+        $response = $this->client->get($this->searchUrl . '/search', [
             'query' => [
                 'query' => 'Ask HN Who is hiring',
                 'tags' => 'ask_hn',
@@ -79,7 +82,7 @@ final class HackerNewsParser implements ParserInterface
 
     private function fetchItem(int $id): array
     {
-        $response = $this->client->get(self::BASE_URL . "/item/{$id}.json");
+        $response = $this->client->get($this->baseUrl . "/item/{$id}.json");
 
         return json_decode($response->getBody()->getContents(), true) ?? [];
     }

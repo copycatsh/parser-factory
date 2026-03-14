@@ -1,5 +1,5 @@
 setup:
-	@if [ ! -f .env ]; then cp sample.env .env && echo ".env created from sample.env"; fi
+	@if [ ! -f .env ]; then cp .env.example .env && echo ".env created from .env.example"; fi
 
 up: setup
 	docker compose up -d
