@@ -27,9 +27,15 @@
         }
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master"
-        ,
-        "phpunit/phpunit": "^8.0"
+        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "^8.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^1.0"
+    },
+    "scripts": {
+        "cs-fix": "php-cs-fixer fix",
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "phpstan": "phpstan analyse"
     },
     "minimum-stability": "dev"
 }

@@ -1,8 +1,13 @@
 /.env
 /.vscode
-/.idea
+.idea/
 /data/*
 /logs/*
 .DS_Store
 
 /vendor/
+/node_modules/
+/dump_sql/
+*.local.php
+.php-cs-fixer.cache
+.phpstan/
