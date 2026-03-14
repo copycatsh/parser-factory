@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 final class ParserFactory
 {
+    /** @param array<string, mixed> $config */
     public static function create(string $type, array $config = []): ParserInterface
     {
         return match ($type) {

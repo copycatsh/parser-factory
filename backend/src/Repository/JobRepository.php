@@ -10,8 +10,10 @@ final class JobRepository
 {
     public function __construct(
         private readonly PDO $pdo,
-    ) {}
+    ) {
+    }
 
+    /** @param array<int, array<string, mixed>> $jobs */
     public function saveMany(array $jobs, string $source): int
     {
         $stmt = $this->pdo->prepare(
@@ -42,6 +44,7 @@ final class JobRepository
         return $count;
     }
 
+    /** @return array<int, array<string, mixed>> */
     public function findAll(int $limit = 50, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare(
@@ -54,6 +57,7 @@ final class JobRepository
         return $stmt->fetchAll();
     }
 
+    /** @return array<int, array<string, mixed>> */
     public function findBySource(string $source, int $limit = 50, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare(

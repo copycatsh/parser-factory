@@ -18,6 +18,7 @@ final class Request
         return parse_url($uri, PHP_URL_PATH) ?: '/';
     }
 
+    /** @return array<string, mixed> */
     public function getBody(): array
     {
         $input = file_get_contents('php://input');

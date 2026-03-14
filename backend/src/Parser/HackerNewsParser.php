@@ -75,11 +75,12 @@ final class HackerNewsParser implements ParserInterface
             return null;
         }
 
-        usort($hits, fn($a, $b) => ($b['created_at_i'] ?? 0) <=> ($a['created_at_i'] ?? 0));
+        usort($hits, fn ($a, $b) => ($b['created_at_i'] ?? 0) <=> ($a['created_at_i'] ?? 0));
 
         return (int) $hits[0]['objectID'];
     }
 
+    /** @return array<string, mixed> */
     private function fetchItem(int $id): array
     {
         $response = $this->client->get($this->baseUrl . "/item/{$id}.json");

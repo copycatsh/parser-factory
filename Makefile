@@ -35,7 +35,18 @@ shell-db:
 composer:
 	docker compose exec backend composer install
 
+cs-check:
+	docker compose exec backend composer cs-check
+
+cs-fix:
+	docker compose exec backend composer cs-fix
+
+phpstan:
+	docker compose exec backend composer phpstan
+
+lint: cs-check phpstan
+
 clean:
 	docker compose down -v --remove-orphans
 
-.PHONY: setup up down restart build logs ps migrate shell-backend shell-db composer clean
+.PHONY: setup up down restart build logs ps migrate shell-backend shell-db composer cs-check cs-fix phpstan lint clean

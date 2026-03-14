@@ -13,7 +13,8 @@ final class ApiController
 {
     public function __construct(
         private readonly JobRepository $jobRepository,
-    ) {}
+    ) {
+    }
 
     public function getJobs(Request $request): void
     {
